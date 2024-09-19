@@ -10,6 +10,7 @@ import com.example.discovery_country.model.dto.request.ReviewRequestForHomeHotel
 import com.example.discovery_country.model.dto.request.ReviewRequestForRestaurant;
 import com.example.discovery_country.model.dto.request.ReviewRequestForScenicSpots;
 import com.example.discovery_country.model.dto.response.ReviewResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,14 +81,36 @@ public class ReviewService {
         log.info("ActionLog.createScenicSpotReview end");
         return reviewResponse;
     }
+//
+//    public ReviewResponse createHomeHotelReview(ReviewRequestForHomeHotel request, MultipartFile file) {
+//
+//        log.info("ActionLog.createHomeHotelReview start");
+//        ReviewEntity reviewEntity = reviewMapper.mapToEntity(request);
+//        reviewEntity.setPhotoUrl(uploadFile(file));
+//
+//        ReviewResponse reviewResponse = reviewMapper.mapToResponse(reviewRepository.save(reviewEntity));
+//        log.info("ActionLog.createHomeHotelReview end");
+//        return reviewResponse;
+//    }
 
-    public ReviewResponse createHomeHotelReview(ReviewRequestForHomeHotel request, MultipartFile file) {
 
+    public ReviewResponse createHomeHotelReview(String reviewRequestJson, MultipartFile file) {
         log.info("ActionLog.createHomeHotelReview start");
-        ReviewEntity reviewEntity = reviewMapper.mapToEntity(request);
+
+        ReviewRequestForHomeHotel reviewRequest;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            reviewRequest = objectMapper.readValue(reviewRequestJson, ReviewRequestForHomeHotel.class);
+        } catch (IOException e) {
+            log.error("Error parsing reviewRequest JSON", e);
+            throw new IllegalArgumentException("Invalid review request format");
+        }
+
+        ReviewEntity reviewEntity = reviewMapper.mapToEntity(reviewRequest);
         reviewEntity.setPhotoUrl(uploadFile(file));
 
         ReviewResponse reviewResponse = reviewMapper.mapToResponse(reviewRepository.save(reviewEntity));
+
         log.info("ActionLog.createHomeHotelReview end");
         return reviewResponse;
     }
@@ -98,4 +121,7 @@ public class ReviewService {
         log.info("ActionLog.softDeleteReview end");
 
     }
+
+
+
 }
