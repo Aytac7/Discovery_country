@@ -64,34 +64,47 @@ public class ReviewService {
         return fileUrl;
     }
 
-    public ReviewResponse createRestaurantReview(ReviewRequestForRestaurant request, MultipartFile file) {
+    public ReviewResponse createRestaurantReview(String reviewRequestJson, MultipartFile file) {
         log.info("ActionLog.createRestaurantReview start");
-        ReviewEntity reviewEntity = reviewMapper.mapToEntity(request);
+
+        ReviewRequestForRestaurant reviewRequest;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            reviewRequest = objectMapper.readValue(reviewRequestJson, ReviewRequestForRestaurant.class);
+        } catch (IOException e) {
+            log.error("Error parsing reviewRequest JSON", e);
+            throw new IllegalArgumentException("Invalid review request format");
+        }
+
+        ReviewEntity reviewEntity = reviewMapper.mapToEntity(reviewRequest);
         reviewEntity.setPhotoUrl(uploadFile(file));
+
         ReviewResponse reviewResponse = reviewMapper.mapToResponse(reviewRepository.save(reviewEntity));
+
         log.info("ActionLog.createRestaurantReview end");
         return reviewResponse;
     }
 
-    public ReviewResponse createScenicSpotReview(ReviewRequestForScenicSpots request, MultipartFile file) {
+    public ReviewResponse createScenicSpotReview(String reviewRequestJson, MultipartFile file) {
         log.info("ActionLog.createScenicSpotReview start");
-        ReviewEntity reviewEntity = reviewMapper.mapToEntity(request);
+
+        ReviewRequestForScenicSpots reviewRequest;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            reviewRequest = objectMapper.readValue(reviewRequestJson, ReviewRequestForScenicSpots.class);
+        } catch (IOException e) {
+            log.error("Error parsing reviewRequest JSON", e);
+            throw new IllegalArgumentException("Invalid review request format");
+        }
+
+        ReviewEntity reviewEntity = reviewMapper.mapToEntity(reviewRequest);
         reviewEntity.setPhotoUrl(uploadFile(file));
+
         ReviewResponse reviewResponse = reviewMapper.mapToResponse(reviewRepository.save(reviewEntity));
+
         log.info("ActionLog.createScenicSpotReview end");
         return reviewResponse;
     }
-//
-//    public ReviewResponse createHomeHotelReview(ReviewRequestForHomeHotel request, MultipartFile file) {
-//
-//        log.info("ActionLog.createHomeHotelReview start");
-//        ReviewEntity reviewEntity = reviewMapper.mapToEntity(request);
-//        reviewEntity.setPhotoUrl(uploadFile(file));
-//
-//        ReviewResponse reviewResponse = reviewMapper.mapToResponse(reviewRepository.save(reviewEntity));
-//        log.info("ActionLog.createHomeHotelReview end");
-//        return reviewResponse;
-//    }
 
 
     public ReviewResponse createHomeHotelReview(String reviewRequestJson, MultipartFile file) {

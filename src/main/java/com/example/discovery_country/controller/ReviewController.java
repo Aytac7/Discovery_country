@@ -37,11 +37,11 @@ public class ReviewController {
     }
 
         @PostMapping("/home-hotel")
-    public ResponseEntity<ReviewResponse> createHomeHotelReview(@Valid @RequestPart("request") String reviewRequestJson,
+    public ResponseEntity<ReviewResponse> createHomeHotelReview(@Valid @RequestPart("review") String review,
                                                                 @RequestPart("photo") MultipartFile photo) {
         log.info("Controller.createHomeHotelReview start");
 
-        ReviewResponse response = reviewService.createHomeHotelReview(reviewRequestJson, photo);
+        ReviewResponse response = reviewService.createHomeHotelReview(review, photo);
 
         log.info("Controller.createHomeHotelReview end");
 
@@ -49,7 +49,7 @@ public class ReviewController {
     }
 
     @PostMapping("/scenic-spot")
-    public ResponseEntity<ReviewResponse> createScenicSpotReview(@Valid @RequestPart("review") ReviewRequestForScenicSpots review,
+    public ResponseEntity<ReviewResponse> createScenicSpotReview(@Valid @RequestPart("review") String review,
                                                                  @RequestPart("photo") MultipartFile photo) {
         log.info("Controller.createScenicSpotReview start");
 
@@ -69,7 +69,7 @@ public class ReviewController {
 
     @PostMapping(value = "/restaurant", consumes = {"multipart/form-data"})
     public ResponseEntity<ReviewResponse> createRestaurantReview
-            (@Valid @RequestPart("review") ReviewRequestForRestaurant review,
+            (@Valid @RequestPart("review") String review,
                                                                  @RequestPart("photo") MultipartFile photo) {
         log.info("Controller.createRestaurantReview start");
 
