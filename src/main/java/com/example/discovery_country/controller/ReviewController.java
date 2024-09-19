@@ -36,14 +36,12 @@ public class ReviewController {
         return path;
     }
 
-
-
         @PostMapping("/home-hotel")
-    public ResponseEntity<ReviewResponse> createHomeHotelReview(@Valid @RequestPart("review") ReviewRequestForHomeHotel review,
+    public ResponseEntity<ReviewResponse> createHomeHotelReview(@Valid @RequestPart("request") String reviewRequestJson,
                                                                 @RequestPart("photo") MultipartFile photo) {
         log.info("Controller.createHomeHotelReview start");
 
-        ReviewResponse response = reviewService.createHomeHotelReview(review, photo);
+        ReviewResponse response = reviewService.createHomeHotelReview(reviewRequestJson, photo);
 
         log.info("Controller.createHomeHotelReview end");
 
