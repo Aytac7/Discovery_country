@@ -1,9 +1,9 @@
-#Discovery Country App
+# Discovery Country App
 Description
 I created this project together with my teammate. This project is a platform that makes it easier for tourists to discover the country.
 
 
-##Technologies and Tools
+## Technologies and Tools
 Java
 Spring Boot
 Spring Data JPA
@@ -21,7 +21,7 @@ Specification
 Pagination
 
 
-##Features
+## Features
 Tourists can easily discover tourist attractions, restaurants, hotels, and more.
 Secure authentication using JWT and OAuth 2.0.
 Data management with PostgreSQL and Liquibase.
